@@ -2,7 +2,7 @@
 import socket 
 import select 
 import sys 
-from thread import *
+from _thread import *
 
 """The first argument AF_INET is the address domain of the 
 socket. This is used when we have an Internet Domain with 
@@ -13,16 +13,17 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
 
 # checks whether sufficient arguments have been provided 
-if len(sys.argv) != 2: 
-	print ("Correct usage: script, IP address, port number") 
-	exit() 
+#if len(sys.argv) != 2: 
+#	print ("Correct usage: script, IP address, port number") 
+#	exit() 
 
 # takes the first argument from command prompt as IP address 
 #IP_address = str(sys.argv[1]) 
-IP_address = "192.168.56.1"
+IP_address = "localhost"
 
 # takes second argument from command prompt as port number 
-Port = int(sys.argv[1]) 
+#Port = int(sys.argv[1]) 
+Port = 8080
 
 """ 
 binds the server to an entered IP address and at the 
@@ -42,17 +43,23 @@ list_of_clients = []
 def clientthread(conn, addr): 
 
 	# sends a message to the client whose user object is conn 
-	conn.send("Welcome to this chatroom!") 
+	st = "Welcome"
+	byt=st.encode()
+	conn.send(byt) 
 
 	while True: 
 			try: 
 				message = conn.recv(2048) 
+				#msg = message
+				#message=msg.encode()
+				#conn.send(byt) 
+				
 				if message: 
 
 					"""prints the message and address of the 
 					user who just sent the message on the server 
 					terminal"""
-					print ("<" + addr[0] + "> " + message) 
+					print ("<" + addr[0] + "> " + message.decode()) 
 
 					# Calls broadcast function to send message to all 
 					message_to_send = "<" + addr[0] + "> " + message 

@@ -1,24 +1,29 @@
 # Python program to implement client side of chat room. 
+#from PyQt5 import QtWidgets
+#from PyQt5.QtWidgets import QApplication, QMainWindow, 
 import socket 
 import select 
 import sys 
-import cgi
+
+def window():
+	app = QApplication(sys.argv)
+#import cgi
 
 
-form = cgi.FieldStorage()
-clientName =  form.getvalue('name')
-clientUsername =  form.getvalue('username')
+#form = cgi.FieldStorage()
+#clientName =  form.getvalue('name')
+#clientUsername =  form.getvalue('username')
 
-while 1:
-    print (clientName)
+#while 1:
+#    print (clientName)
     
     
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-if len(sys.argv) != 3: 
-	print ("Correct usage: script, IP address, port number") 
-	exit() 
-IP_address = str(sys.argv[1]) 
-Port = int(sys.argv[2]) 
+#if len(sys.argv) != 3: 
+#	print ("Correct usage: script, IP address, port number") 
+#	exit() 
+IP_address = "localhost" 
+Port = 8080 
 server.connect((IP_address, Port)) 
 
 while True: 
@@ -42,7 +47,10 @@ while True:
 			print (message) 
 		else: 
 			message = sys.stdin.readline() 
-			server.send(message) 
+			#st = "Welcome"
+			byt=message.encode()
+			server.send(byt) 
+			#server.send(message) 
 			sys.stdout.write("<You>") 
 			sys.stdout.write(message) 
 			sys.stdout.flush() 
