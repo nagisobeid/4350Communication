@@ -11,9 +11,17 @@ ADDRESS = (SERVER, PORT)
 FORMAT = "utf-8"
 
 
-client = socket.socket(socket.AF_INET, 
-					socket.SOCK_STREAM) 
-client.connect(ADDRESS) 
+############## BREAK AND FIX
+try:
+	client = socket.socket(socket.AF_INET, 
+						socket.SOCK_STREAM) 
+	client.connect(ADDRESS) 
+except socket.error as err:
+	print("********************************************************")
+	print("Server is DOWN or has NOT been Started <------------ ERR")
+	print("****Please start server and try Running client again****")
+	exit()
+###########################
 
 class GUI: 
 	def __init__(self): 
@@ -56,6 +64,8 @@ class GUI:
 		self.go.place(relx = 0.4, 
 					rely = 0.35) 
 		self.Window.mainloop() 
+
+
 
 	def runClient(self, name): 
 		self.login.destroy() 
@@ -137,9 +147,11 @@ class GUI:
 		snd= threading.Thread(target = self.sendMessage)
 		snd.start()
 
-	
+
 	def receive(self): 
 		while True: 
+			print("loop")
+
 			try: 
 				message = client.recv(1024).decode(FORMAT) 
 				

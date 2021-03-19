@@ -1,6 +1,8 @@
 
 import socket 
 import threading 
+import random
+import requests
 
 
 PORT = 5000
@@ -17,7 +19,10 @@ server.bind(ADDRESS)
 
 def startChat(): 
 	
-	server.listen() 
+	server.listen()
+
+	#----------TESTING-----------
+	#test(FORMAT) 
 	
 	while True: 
 		conn, addr = server.accept() 
@@ -48,6 +53,43 @@ def handle(conn, addr):
 def broadcastMessage(message): 
 	for client in clients: 
 		client.send(message) 
+
+def test(FORMAT):
+
+	success = 0
+	unsuccess = 0
+	WORDS = []
+
+	with open('wordlist','r') as file:  
+		for line in file:      
+			for word in line.split(): 
+				# displaying the words  
+				WORDS.append(word)            
+
+	testing = 0
+	while testing < 20:
+		st = random.randint(0,1) #0 = decode, 1 = encode
+		msg = WORDS[testing]
+
+		if (st == 0):
+			#msg = WORDS[testing].decode(FORMAT)
+			print ("UN-SUCCESSFUL <------ MESSAGE IS NOT-ENCODED - MSG = ", msg, " <--TYPE = ", type(msg))
+			unsuccess+=1
+		elif (st == 1):
+			msg = WORDS[testing].encode(FORMAT)
+			print ("SUCCESSFUL <------ MESSAGE IS ENCODED - MSG = ", msg, " <--TYPE = ", type(msg))
+			success+=1
+	
+		testing += 1
+
+	print ("===========================================")
+	print ("SUCCESSFUL-------", success )
+	print ("UN-SUCCESSFUL----", unsuccess )
+	print ("TOTAL TESTS -----", testing )
+	
+	exit()
+
+
 
 
 startChat() 
